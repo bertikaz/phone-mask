@@ -32,6 +32,17 @@ export type {
   MaskFullMap as PMaskFullMap
 } from '@desource/phone-mask';
 
+// Tree-shakeable named re-exports
+export {
+  getFlagEmoji,
+  countPlaceholders,
+  formatDigitsWithMap,
+  pickMaskVariant,
+  removeCountryCodePrefix,
+  toArray
+} from '@desource/phone-mask';
+
+/** @deprecated Use individual named exports (`getFlagEmoji`, `countPlaceholders`, etc.) instead */
 export const PMaskHelpers = {
   getFlagEmoji,
   countPlaceholders,
