@@ -132,12 +132,20 @@ export const PhoneInput = forwardRef<PhoneInputRef, PhoneInputProps>((props, ref
   // ── Focus / blur ──────────────────────────────────────────────
   const handleFocusInput = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
+      // Do not hide the hint on focus; keep it visible if already shown (matches Vue)
       if (validationTimerRef.current) clearTimeout(validationTimerRef.current);
       closeDropdown();
       onFocus?.(e);
     },
     [onFocus, closeDropdown]
   );
+
+  // Screen reader copy announcement (matches Vue's watch(copyMessage) → liveRef)
+  const handleCopyAnnounce = useCallback(() => {
+    if (liveRef.current) {
+      liveRef.current.textContent = 'Phone number copied to clipboard';
+    }
+  }, []);
 
   const handleInput = useCallback(() => {
     // Handled by useInputHandlers; this is for the React onInput prop
@@ -263,6 +271,7 @@ export const PhoneInput = forwardRef<PhoneInputRef, PhoneInputProps>((props, ref
             countryCode={detection.country.code}
             displayValue={phoneState.displayValue}
             onCopy={onCopy}
+            onCopyAnnounce={handleCopyAnnounce}
             onClear={handleClear}
             focusInput={() => telRef.current?.focus()}
             renderActionsBefore={renderActionsBefore}

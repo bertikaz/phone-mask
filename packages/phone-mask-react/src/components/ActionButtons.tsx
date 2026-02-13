@@ -21,6 +21,8 @@ export interface ActionButtonsProps {
     displayValue: string;
     /** Callback after copy */
     onCopy?: (value: string) => void;
+    /** Callback to announce copy to screen readers */
+    onCopyAnnounce?: () => void;
     /** Callback after clear */
     onClear: () => void;
     /** Focus the input after clear */
@@ -44,6 +46,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     countryCode,
     displayValue,
     onCopy,
+    onCopyAnnounce,
     onClear,
     focusInput,
     renderActionsBefore,
@@ -74,6 +77,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
             await navigator.clipboard.writeText(trimmedValue);
             setCopied(true);
             onCopy?.(trimmedValue);
+            onCopyAnnounce?.();
 
             if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
             copyTimerRef.current = setTimeout(() => {

@@ -100,14 +100,20 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = ({
             onClose();
         };
 
+        // Skip repositioning when scroll originates inside the dropdown (matches Vue)
+        const onScroll = (ev: Event) => {
+            if (ev.target && dropdownRef.current?.contains(ev.target as Node)) return;
+            positionDropdown();
+        };
+
         window.addEventListener('resize', positionDropdown);
-        window.addEventListener('scroll', positionDropdown, true);
+        window.addEventListener('scroll', onScroll, true);
         window.addEventListener('click', onDocClick, true);
 
         return () => {
             clearTimeout(focusTimer);
             window.removeEventListener('resize', positionDropdown);
-            window.removeEventListener('scroll', positionDropdown, true);
+            window.removeEventListener('scroll', onScroll, true);
             window.removeEventListener('click', onDocClick, true);
         };
     }, [isOpen, positionDropdown, onClose, anchorRef]);

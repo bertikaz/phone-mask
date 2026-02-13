@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { MasksFullMap, MasksFullMapEn, type CountryKey, type MaskFull } from '@desource/phone-mask';
+import { MasksFull, MasksFullEn, MasksFullMap, MasksFullMapEn, type CountryKey, type MaskFull } from '@desource/phone-mask';
 import { GEO_IP_URL, GEO_IP_TIMEOUT, CACHE_KEY, CACHE_EXPIRY_MS } from '../consts';
 
 // ── Shared utilities ────────────────────────────────────────────────
@@ -27,11 +27,10 @@ export function tryGetCountry(code: string, locale: string): MaskFull | null {
   return data ? { id, ...data } : null;
 }
 
-/** Build the full sorted country list for a locale */
+/** Build the full sorted country list for a locale (uses pre-built arrays like Vue) */
 export function getCountries(locale: string): MaskFull[] {
   const isEn = locale.toLowerCase().startsWith('en');
-  const map = isEn ? MasksFullMapEn : MasksFullMap(locale);
-  return Object.entries(map).map(([id, data]) => ({ id: id as CountryKey, ...data }));
+  return isEn ? MasksFullEn : MasksFull(locale);
 }
 
 // ── Detection helpers ───────────────────────────────────────────────
