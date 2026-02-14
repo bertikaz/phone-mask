@@ -89,7 +89,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         } finally {
             setIsCopying(false);
         }
-    }, [fullFormatted, onCopy, isCopying]);
+    }, [fullFormatted, onCopy, onCopyAnnounce, isCopying]);
 
     const handleClearClick = useCallback(() => {
         onClear();
